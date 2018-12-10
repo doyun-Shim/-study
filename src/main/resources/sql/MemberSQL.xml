@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+ 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MemberDao">
+	<!-- 탈퇴회원 체크 -->
+	<select id="memberLeave" parameterType="Member" resultType="int">
+	   SELECT COUNT(1) 
+		FROM MEMBER 
+		WHERE ID = #{id}
+		  AND PASSWORD = #{password}
+		  AND MEMBER_STATUS = "D001"
+	</select>
+
+	<!-- 회원 탈퇴  -->
+	<update id="memberUpdate" parameterType="String">
+		UPDATE
+			MEMBER
+		SET
+			MEMBER_STATUS = "D001",	DROP_OUT_DATE = NOW()
+		WHERE
+			ID = #{ID}
+	</update>
+
+
+	<!-- 로그인 -->
+	<select id="Login" parameterType="Member" resultType="int">
+	<![CDATA[
+		SELECT 
+				COUNT(1) 
+		FROM 
+				MEMBER 
+		WHERE 
+				ID = #{id}
+				AND 
+				PASSWORD = #{password}
+				AND
+				MEMBER_STATUS =#{member_status}
+				]]>
+	</select>
+	
+	<!-- 로그인후 회원 정보 -->
+	<select id="memberInfo" parameterType="Member" resultType="member">
+		
+			SELECT 
+					*
+			FROM
+					MEMBER
+			WHERE
+				ID = #{id}
+				AND 
+				PASSWORD = #{password}
+	
+	</select>
+	
+	<!-- 중복 ID체크 -->
+	<select id="checkId" parameterType="String" resultType="int">
+		
+			SELECT 
+					COUNT(1)
+			FROM
+					MEMBER
+			WHERE
+				ID = #{id}
+	</select>
+	
+	
+	<select id="ajaxselect" parameterType="Member">
+		SELECT 
+			ID
+		FROM
+			MEMBER
+
+			<where>
+				${type} like ={value}
+	        </where>
+
+	</select>
+	
+	
+		
+	<insert id="memberphoto" parameterType="Member">
+	<![CDATA[
+		INSERT INTO
+			MEMBER_PHOTO_FILE
+					(	CHANGE_DATE
+						,CHANGE_YN
+						,MEMBER_SEQ	)
+				VALUE
+					(
+						#{CHANGE_DATE}
+						,#{CHANGE_YN}
+						,#{MEMBER_SEQ}	)
+		]]>
+	</insert>
+	
+	<!-- 회원 가입 -->
+	<insert id="memberjoin" parameterType="Member" >
+		<![CDATA[
+		INSERT INTO    
+				 MEMBER   
+						(	ID       
+						   ,PASSWORD       
+						   ,USER_NAME       
+						   ,NICK_NAME       
+						   ,ACCESS_COUNT       
+						   ,LEVEL       
+						   ,POINT     
+						   ,INSERT_DATE  
+						   ,LAST_UPDATE_DATE       
+						   ,EMAIL       
+						   ,MEMBER_STATUS       
+						   ,PHONE_NUM       
+						   ,ADDRESS       
+						   ,BIRTH       
+						   ,SEX       
+						   ,FILEUPLOAD       
+						   ,LIVE_NATIONALITY     
+						   ,CITY       
+						   ,JOB       
+						   ,RELIGION       
+						   ,INTRODUCTION  	)   
+				VALUES      
+						(   #{id}       
+						   ,#{password}       
+						   ,#{user_name}       
+						   ,#{nick_name}      
+						   ,#{access_count}       
+						   ,#{level}     
+						   ,#{point}       
+						   ,NOW()     
+						   ,NOW()
+						   ,#{email}       
+						   ,#{member_status}
+						   ,#{phone_num}     
+						   ,#{address}
+						   ,#{birth}
+						   ,#{sex}  
+						   ,#{fileupload}       
+						   ,#{live_nationality}
+						   ,#{city}   
+						   ,#{job}     
+						   ,#{religion}      
+						   ,#{introduction}  )
+		]]>
+	</insert>
+</mapper>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="User">
+	
+	<select id="selectUserList" resultType="java.util.Map">
+		SELECT * FROM member
+	</select>
+	
+	<select id="searchUser" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT *
+		 FROM member
+	    WHERE BUSI_NUM like #{busi_num}
+	       OR CUSTOM = #{custom}
+	    /* com.develop.dao.DevelopDao.selectDevelopByDevelopSeq */
+	</select>
+	
+	
+	<select id="selectUserById" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT *
+		 FROM member
+	    WHERE ID = #{ID}
+	</select>
+	
+	<insert id="insertUser">
+		INSERT INTO member (
+			`ID`,`NAME`,`PASSWORD`
+		) VALUES (
+			 #{ID} 		
+			,#{NAME} 			
+			,#{PASSWORD}
+		);
+		/* com.develop.dao.customDao.insertUser */
+	</insert>
+	
+	<update id="updateDevelop" parameterType="Develop">
+		UPDATE DEVELOP
+		   SET 
+		     TITLE = #{title}
+			,CONTENT = #{content}
+			,UPDATE_DATE = NOW()
+		WHERE DEVELOP_SEQ = #{develop_seq}
+	</update>
+	
+	<select id="loginChk" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT *
+		 FROM member
+	    WHERE id = #{ID} 
+	    AND	password = #{PW}
+	</select>
+	
+</mapper>

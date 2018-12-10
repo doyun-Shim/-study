@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Board">
+	
+	<select id="selectList" resultType="java.util.Map">
+		SELECT * FROM board
+	</select>
+	
+	<select id="search" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT *
+		 FROM board
+	    WHERE BUSI_NUM like #{busi_num}
+	       OR CUSTOM = #{custom}
+	    /* com.develop.dao.DevelopDao.selectDevelopByDevelopSeq */
+	</select>
+	
+	
+	<select id="selectById" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT *
+		 FROM board
+	    WHERE BOARD_ID = #{BOARD_ID}
+	</select>
+	
+	<select id="detail" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT a.BOARD_ID, a.MEMBER_ID, a.TITLE, a.REGDATE
+     		 , a.CONTENT, b.NAME
+		FROM board a left join member b
+		  ON (a.MEMBER_ID = b.ID)
+	    WHERE BOARD_ID = #{BOARD_ID}
+	</select>
+	
+	<insert id="insert" parameterType="java.util.Map">
+		INSERT INTO board (
+			BOARD_ID, `MEMBER_ID`,`TITLE`,`REGDATE`,`CONTENT`
+		) VALUES (
+			IFNULL(#{BOARD_ID},NEXTVAL('board')), #{ID} , #{TITLE}, now(), #{CONTENT}
+		)
+		ON DUPLICATE KEY
+		UPDATE MEMBER_ID = #{ID}
+	        , TITLE = #{TITLE}
+	        , CONTENT = #{CONTENT}
+	</insert>
+	
+	<update id="update" parameterType="java.util.Map">
+		UPDATE board set MEMBER_ID = #{ID}
+	        , TITLE = #{TITLE}
+	        , CONTENT = #{CONTENT}
+		WHERE BOARD_ID = #{BOARD_ID};
+	</update>
+	
+	<delete id="delete" parameterType="java.util.Map">
+		DELETE FROM board 
+		WHERE BOARD_ID = #{BOARD_ID}; 
+	</delete>
+</mapper>
