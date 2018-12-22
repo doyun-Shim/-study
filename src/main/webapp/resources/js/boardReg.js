@@ -1,11 +1,10 @@
-/**
- * 
- */
 var host = "http://220.121.48.205:8181";
 $(document).ready(function(){
 	function getUrlParameter(name) {
 	    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+	    		//
 	    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+	    		//
 	    var results = regex.exec(location.search);
 	    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 	};
@@ -24,7 +23,6 @@ $(document).ready(function(){
 				console.log(result);
 			},
 			error:function(error){
-				
 			}
 	    });
 	}
